@@ -16,7 +16,26 @@ const Button = React.forwardRef(({ className, children, ...props }, ref) => {
 Button.displayName = 'Button';
 
 export default function PomodoroTimer() {
-  const audioRef = useRef(new Audio('https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3'));
+  const audioContext = useRef(null);
+  
+  const playBeep = () => {
+    if (!audioContext.current) {
+      audioContext.current = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    
+    const oscillator = audioContext.current.createOscillator();
+    const gainNode = audioContext.current.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.current.destination);
+    
+    oscillator.type = 'sine';
+    oscillator.frequency.value = 800;
+    gainNode.gain.value = 0.5;
+    
+    oscillator.start();
+    oscillator.stop(audioContext.current.currentTime + 0.2);
+  };
   const [minutes, setMinutes] = useState(25);
   const [seconds, setSeconds] = useState(0);
   const [isWorking, setIsWorking] = useState(true);
@@ -30,7 +49,7 @@ export default function PomodoroTimer() {
         if (seconds === 0) {
           if (minutes === 0) {
             // Timer completed
-            audioRef.current.play();
+            playBeep();
             setIsActive(false);
             if (isWorking && sessionCount < 4) {
               setSessionCount(sessionCount + 1);
@@ -53,7 +72,7 @@ export default function PomodoroTimer() {
 
   const toggleTimer = () => setIsActive(!isActive);
   const resetTimer = () => {
-    audioRef.current.play();
+    playBeep();
     setMinutes(isWorking ? 25 : 5);
     setSeconds(0);
     setIsWorking(true);
