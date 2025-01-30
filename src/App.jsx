@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import * as Dialog from '@radix-ui/react-dialog';
 import { PlayIcon, StopIcon, ReloadIcon, InfoCircledIcon } from '@radix-ui/react-icons';
 
 const Button = React.forwardRef(({ className, children, ...props }, ref) => {
