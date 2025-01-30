@@ -1,13 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
-import {
-  Button,
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@radix-ui/react-dialog';
-import { Clock, Play, Stop, Reset, Info } from '@radix-ui/react-icons';
+import * as Dialog from '@radix-ui/react-dialog';
+import { Slot } from '@radix-ui/react-slot';
+import { PlayIcon, StopIcon, ResetIcon, InfoIcon } from '@radix-ui/react-icons';
 
+const Button = React.forwardRef(({ className, ...props }, ref) => {
+  return (
+    <Slot
+      ref={ref}
+      className={`inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium bg-white border border-gray-300 hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${className}`}
+      {...props}
+    />
+  );
+});
 
 export default function PomodoroTimer() {
   const audioRef = useRef(new Audio('https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3'));
@@ -70,9 +74,9 @@ export default function PomodoroTimer() {
             className="gap-2"
           >
             {isActive ? (
-              <Stop size={18} />
+              <StopIcon className="w-4 h-4" />
             ) : (
-              <Play size={18} />
+              <PlayIcon className="w-4 h-4" />
             )}
             {isActive ? 'Stop' : 'Start'}
           </Button>
@@ -84,7 +88,7 @@ export default function PomodoroTimer() {
             onClick={resetTimer}
             className="gap-2 flex items-center"
           >
-            <Reset size={18} />
+            <ResetIcon className="w-4 h-4" />
             Reset
           </Button>
           <div className={`text-lg font-medium ${isWorking ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
@@ -98,7 +102,7 @@ export default function PomodoroTimer() {
             onClick={() => setIsWorking(!isWorking)}
             className="gap-2 flex items-center"
           >
-            <Info size={18} />
+            <InfoIcon className="w-4 h-4" />
             {isWorking ? 'Switch to Break' : 'Switch to Work'}
           </Button>
         </div>
