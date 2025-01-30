@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Button,
   Dialog,
@@ -7,11 +7,10 @@ import {
   DialogTitle,
 } from '@radix-ui/react-dialog';
 import { Clock, Play, Stop, Reset, Info } from '@radix-ui/react-icons';
-import * as MP3 from '@ffmpeg/audio-mp3';
 
-const sound = new MP3.Sound('https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3');
 
 export default function PomodoroTimer() {
+  const audioRef = useRef(new Audio('https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3'));
   const [minutes, setMinutes] = useState(25);
   const [seconds, setSeconds] = useState(0);
   const [isWorking, setIsWorking] = useState(true);
@@ -25,7 +24,7 @@ export default function PomodoroTimer() {
         if (seconds === 0) {
           if (minutes === 0) {
             // Timer completed
-            sound.play();
+            audioRef.current.play();
             setIsActive(false);
             if (isWorking && sessionCount < 4) {
               setSessionCount(sessionCount + 1);
@@ -48,7 +47,7 @@ export default function PomodoroTimer() {
 
   const toggleTimer = () => setIsActive(!isActive);
   const resetTimer = () => {
-    sound.play();
+    audioRef.current.play();
     setMinutes(isWorking ? 25 : 5);
     setSeconds(0);
     setIsWorking(true);
