@@ -1,0 +1,10 @@
+{
+  "name": "pomodoro",
+  "private": true,
+  "version": "0.0.0",
+  "dependencies": {
+    "@radix-ui/react-dialog": "^1.0.0",
+    "@radix-ui/react-icons": "^1.0.0",
+    "@ffmpeg/audio-mp3": "^0.4.5"
+  }
+}
